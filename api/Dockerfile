@@ -3,8 +3,8 @@ RUN apt-get update
 RUN apt-get install -y libmagic1
 WORKDIR /app
 
-COPY ../requirements.txt requirements.txt
+COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
-COPY .. .
+COPY . .
 CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "80"]
