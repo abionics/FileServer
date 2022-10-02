@@ -7,9 +7,9 @@ services:
     restart: on-failure
     environment:
       REQUEST_TIMEOUT_TOTAL: 30
-      FILE_FOLDER: /home/app/files
+      FILE_FOLDER: /files
     volumes:
-      - ./files:/home/app/files
+      - ./files:/files
 
   nginx:
     image: nginx:1.23.1-alpine
