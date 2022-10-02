@@ -1,18 +1,18 @@
-version: '3.1'
+version: "3.1"
 
 services:
 
   api:
-    restart: on-failure
     build: api/
+    restart: on-failure
     environment:
-      REQUEST_TIMEOUT: 30
+      REQUEST_TIMEOUT_TOTAL: 30
       FILE_FOLDER: /home/app/files
     volumes:
       - ./files:/home/app/files
 
   nginx:
-    image: nginx:1.18-alpine
+    image: nginx:1.23.1-alpine
     restart: on-failure
     ports:
       - "80:80"
