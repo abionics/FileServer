@@ -2,13 +2,17 @@ import mimetypes
 
 import magic
 
-from config import UNKNOWN_EXTENSION
 
-
-def detect_extensions(content: bytes) -> str:
+def detect_extension(content: bytes) -> str:
     mime = magic.from_buffer(content, mime=True)
-    return mime_to_extensions(mime)
+    return mime_to_extension(mime)
 
 
-def mime_to_extensions(mime: str) -> str:
-    return mimetypes.guess_extension(mime).removeprefix('.') or UNKNOWN_EXTENSION
+def mime_to_extension(mime: str) -> str:
+    extension = mimetypes.guess_extension(mime)
+    if extension is None:
+        mime = mime.split(';')[0]
+        extension = mimetypes.guess_extension(mime)
+        if extension is None:
+            return ''
+    return extension.removeprefix('.')

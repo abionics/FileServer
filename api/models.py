@@ -1,6 +1,8 @@
+import hashlib
+
 from pydantic import BaseModel
 
-from utils import detect_extensions
+from utils import detect_extension
 
 
 class FileData:
@@ -14,7 +16,14 @@ class FileData:
             extension = extension.strip()
             if extension != '':
                 return extension
-        return detect_extensions(content)
+        return detect_extension(content)
+
+    def hash(self) -> str:
+        return hashlib.md5(self.content).hexdigest()
+
+    def filename(self) -> str:
+        name = self.hash()
+        return f'{name}.{self.extension}' if self.extension else name
 
 
 class Query(BaseModel):
