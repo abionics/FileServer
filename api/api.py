@@ -35,23 +35,23 @@ app = FastAPI()
 app.middleware('http')(catch_exceptions_middleware)
 
 
-@app.post('/upload/file')
-async def upload_file(file: UploadFile) -> dict:
+@app.post('/{bucket}/upload/file')
+async def upload_file(bucket: str, file: UploadFile) -> dict:
     data = await _parse_file(file)
-    return await _save(data)
+    return await _save(bucket, data)
 
 
-@app.post('/upload/url')
-async def upload_url(query: Query) -> dict:
+@app.post('/{bucket}/upload/url')
+async def upload_url(bucket: str, query: Query) -> dict:
     data = await _request_file(query)
-    return await _save(data)
+    return await _save(bucket, data)
 
 
-@app.post('/upload/base64')
-async def upload_base64(content: str = Body(), extension: str = Body(default=None)) -> dict:
+@app.post('/{bucket}/upload/base64')
+async def upload_base64(bucket: str, content: str = Body(), extension: str = Body(default=None)) -> dict:
     content = base64.b64decode(content)
     data = FileData(content, extension)
-    return await _save(data)
+    return await _save(bucket, data)
 
 
 async def _parse_file(file: UploadFile) -> FileData:
@@ -71,14 +71,16 @@ async def _request_file(query: Query) -> FileData:
             return FileData(content, extension)
 
 
-async def _save(data: FileData) -> dict:
+async def _save(bucket: str, data: FileData) -> dict:
     filename = data.filename()
-    filepath = os.path.join(FILE_FOLDER, filename)
-    if os.path.exists(filepath):
-        logger.warning(f'File "{filename}" is already exist')
+    directory = os.path.join(FILE_FOLDER, bucket)
+    path = os.path.join(directory, filename)
+    if os.path.exists(path):
+        logger.warning(f'File "{filename}" is already exist in bucket "{bucket}"')
     else:
-        length = len(data.content)
-        with open(filepath, 'wb') as file:
+        os.makedirs(directory, exist_ok=True)
+        with open(path, 'wb') as file:
             file.write(data.content)
-        logger.success(f'Saved "{filename}", size is {length} bytes')
+        size = len(data.content)
+        logger.success(f'Saved "{filename}" in bucket "{bucket}", size is {size} bytes')
     return {'filename': filename}

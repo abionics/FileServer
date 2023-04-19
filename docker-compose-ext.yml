@@ -1,0 +1,18 @@
+version: "3.1"
+
+services:
+
+  files:
+    build: api/
+    restart: on-failure
+    environment:
+      REQUEST_TIMEOUT_TOTAL: 30
+      FILE_FOLDER: /files
+    volumes:
+      - ./files:/files
+    networks:
+      - <network_name>
+
+networks:
+  <network_name>:
+    external: true
