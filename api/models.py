@@ -2,7 +2,7 @@ import hashlib
 
 from pydantic import BaseModel
 
-from utils import detect_extension
+from utils import guess_extension_by_content
 
 
 class FileData:
@@ -16,7 +16,7 @@ class FileData:
             extension = extension.strip()
             if extension != '':
                 return extension
-        return detect_extension(content)
+        return guess_extension_by_content(content)
 
     def hash(self) -> str:
         return hashlib.md5(self.content).hexdigest()

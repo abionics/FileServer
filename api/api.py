@@ -13,7 +13,7 @@ from starlette.responses import Response, JSONResponse
 from config import REQUEST_TIMEOUT, FILE_FOLDER
 from exception import FileServerException
 from models import FileData, Query
-from utils import mime_to_extension
+from utils import guess_extension_by_mime_type
 
 
 async def catch_exceptions_middleware(request: Request, endpoint: Callable) -> Response:
@@ -66,8 +66,9 @@ async def _request_file(query: Query) -> FileData:
             if not 200 <= response.status < 300:
                 raise FileServerException(f'Error response code {response.status}')
             content = await response.content.read()
-            content_type = response.headers.get('content-type', '').strip('/\n\t')
-            extension = mime_to_extension(content_type)
+            content_type = response.headers.get('content-type', '').strip(';/\n\t')
+            mime_type = content_type.split(';')[0]
+            extension = guess_extension_by_mime_type(mime_type)
             return FileData(content, extension)
 
 
