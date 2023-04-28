@@ -6,6 +6,7 @@ from utils import guess_extension_by_content
 
 
 class FileData:
+
     def __init__(self, content: bytes, extension: str | None):
         self.content = content
         self.extension = self._detect_extension(content, extension)

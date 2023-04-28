@@ -56,7 +56,10 @@ async def upload_base64(bucket: str, content: str = Body(), extension: str = Bod
 
 async def _parse_file(file: UploadFile) -> FileData:
     content = await file.read()
-    extension = file.filename.split('.')[-1]
+    if '.' in file.filename:
+        extension = file.filename.rsplit('.', maxsplit=1)[-1]
+    else:
+        extension = None
     return FileData(content, extension)
 
 
