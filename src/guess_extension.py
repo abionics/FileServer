@@ -4,12 +4,12 @@ import filetype
 import magic
 
 
-def guess_extension_by_mime_type(mime_type: str, default: str = None) -> str | None:
-    return _by_mime_type(mime_type) or default
+def guess_extension_by_content(content: bytes) -> str | None:
+    return _by_filetype(content) or _by_magic(content)
 
 
-def guess_extension_by_content(content: bytes, default: str = None) -> str | None:
-    return _by_filetype(content) or _by_magic(content) or default
+def guess_extension_by_mime_type(mime_type: str) -> str | None:
+    return _by_mime_type(mime_type)
 
 
 def _by_filetype(content: bytes) -> str | None:

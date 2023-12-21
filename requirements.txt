@@ -1,0 +1,10 @@
+loguru==0.7.2
+aiohttp==3.9.1
+python-magic==0.4.27
+filetype==1.2.0
+cityhash==0.4.7
+
+fastapi==0.105.0
+uvicorn[standard]==0.25.0
+python-multipart==0.0.6
+pydantic==2.5.2

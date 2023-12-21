@@ -2,12 +2,11 @@ version: "3.1"
 
 services:
 
-  files:
-    build: api/
+  api:
+    build: .
     restart: on-failure
     environment:
-      REQUEST_TIMEOUT_TOTAL: 30
-      FILE_FOLDER: /files
+      STORAGE_DIRECTORY: /files
     volumes:
       - ./files:/files
 
