@@ -17,6 +17,7 @@ services:
       - "80:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./auth:/home/app/auth:ro
       - ./files:/home/app/files
     depends_on:
       - api
