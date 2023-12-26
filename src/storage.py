@@ -62,13 +62,13 @@ def save_sync(blob: Blob) -> dict:
     filepath = blob.create_filepath()
     check_filepath(filepath)
     if os.path.exists(filepath):
-        logger.warning(f'File "{blob.path}" is already exist in bucket "{blob.bucket}"')
+        logger.debug(f'File "{blob.path}" is already exist in bucket "{blob.bucket}"')
         return {'path': blob.path, 'exists': True}
     directory = os.path.dirname(filepath)
     os.makedirs(directory, exist_ok=True)
     with open(filepath, 'wb') as file:
         file.write(blob.content)
-    logger.success(f'Saved "{blob.path}" in bucket "{blob.bucket}", size is {blob.size} bytes')
+    logger.debug(f'Saved "{blob.path}" in bucket "{blob.bucket}", size is {blob.size} bytes')
     return {'path': blob.path, 'exists': False}
 
 
