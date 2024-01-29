@@ -31,7 +31,7 @@ app = FastAPI()
 app.middleware('http')(catch_exceptions_middleware)
 
 
-@app.post('/{bucket}/ping')
+@app.get('/{bucket}/ping')
 async def ping(bucket: str) -> bool:
     return check_access(bucket)
 
