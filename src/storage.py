@@ -77,6 +77,8 @@ def check_filepath(filepath: str):
         raise FileServerException(f'Invalid path "{filepath}"')
 
 
-def check_access(bucket: str) -> bool:
+def check_access(bucket: str, mkdir: bool) -> bool:
     path = os.path.join(STORAGE_DIRECTORY, bucket)
+    if mkdir:
+        os.makedirs(path, exist_ok=True)
     return os.access(path, os.R_OK | os.W_OK)

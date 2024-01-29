@@ -32,8 +32,8 @@ app.middleware('http')(catch_exceptions_middleware)
 
 
 @app.get('/{bucket}/ping')
-async def ping(bucket: str) -> bool:
-    return check_access(bucket)
+async def ping(bucket: str, mkdir: bool = True) -> bool:
+    return check_access(bucket, mkdir)
 
 
 @app.post('/{bucket}/upload/files')
