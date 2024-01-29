@@ -75,3 +75,8 @@ def save_sync(blob: Blob) -> dict:
 def check_filepath(filepath: str):
     if not filepath.startswith(STORAGE_DIRECTORY):
         raise FileServerException(f'Invalid path "{filepath}"')
+
+
+def check_access(bucket: str) -> bool:
+    path = os.path.join(STORAGE_DIRECTORY, bucket)
+    return os.access(path, os.R_OK | os.W_OK)

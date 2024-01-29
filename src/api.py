@@ -9,7 +9,7 @@ from loguru import logger
 
 from exception import FileServerException
 from models import Query
-from storage import parse_file, request_file, parse_base64, save
+from storage import parse_file, request_file, parse_base64, save, check_access
 
 
 async def catch_exceptions_middleware(request: Request, endpoint: Callable) -> Response:
@@ -29,6 +29,11 @@ async def catch_exceptions_middleware(request: Request, endpoint: Callable) -> R
 
 app = FastAPI()
 app.middleware('http')(catch_exceptions_middleware)
+
+
+@app.post('/{bucket}/ping')
+async def ping(bucket: str) -> bool:
+    return check_access(bucket)
 
 
 @app.post('/{bucket}/upload/files')
